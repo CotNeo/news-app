@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: news-app-backend
+    env: node
+    buildCommand: ./build.sh
+    startCommand: node server.js
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: PORT
+        value: 10000 
