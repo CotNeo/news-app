@@ -4,7 +4,7 @@
   "main": "server.ts",
   "scripts": {
     "start": "NODE_ENV=production node server.ts",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.ts"
   },
   "dependencies": {
     "express": "^4.18.2",
