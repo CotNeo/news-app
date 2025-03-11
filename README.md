@@ -120,9 +120,6 @@ Katkılarınızı memnuniyetle karşılıyoruz! Lütfen şu adımları izleyin:
 4. Branch'inizi push edin (`git push origin feature/amazing-feature`)
 5. Pull Request açın
 
-## 📄 Lisans
-
-Bu proje MIT lisansı altında lisanslanmıştır. Daha fazla bilgi için `LICENSE` dosyasına bakın.
 
 ## 📞 İletişim
 
