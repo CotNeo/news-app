@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/favorites', async (req: Request, res: Response) => {
   try {
     const favorites = await NewsModel.find().sort({ createdAt: -1 });
-    const articles = favorites.map((doc: any) => convertToArticle(doc));
+    const articles = favorites.map((doc) => convertToArticle(doc));
     res.status(200).json(articles);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching favorites', error });

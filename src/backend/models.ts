@@ -39,8 +39,11 @@ const ArticleSchema = new Schema<ArticleDocument>(
 // Create and export the Article model
 export const NewsModel = mongoose.models.Article || mongoose.model<ArticleDocument>('Article', ArticleSchema);
 
+// Define a type for the document without Document properties
+type ArticleDocumentData = Omit<ArticleDocument, keyof Document | 'createdAt' | 'updatedAt'>;
+
 // Helper function to convert between Article and ArticleDocument
-export const convertToArticleDocument = (article: Article): Omit<ArticleDocument, keyof Document> => {
+export const convertToArticleDocument = (article: Article): ArticleDocumentData => {
   return {
     articleId: article.id,
     title: article.title,

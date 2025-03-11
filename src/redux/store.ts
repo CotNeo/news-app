@@ -2,14 +2,15 @@ import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { newsApi } from '../services/api';
 import newsReducer from './newsSlice';
+import { Article } from './newsSlice';
 
 // Define the store structure
 export interface RootState {
   news: {
-    favorites: any[];
+    favorites: Article[];
     darkMode: boolean;
   };
-  [key: string]: any;
+  [newsApi.reducerPath]: ReturnType<typeof newsApi.reducer>;
 }
 
 export const store = configureStore({
