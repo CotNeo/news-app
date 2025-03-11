@@ -8,8 +8,8 @@ import { newsRoutes } from './routes';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/news-app';
+const PORT = process.env.PORT || 3000;
+const MONGODB_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/news-app';
 
 // Middleware
 app.use(cors());
@@ -19,22 +19,29 @@ app.use(express.json());
 app.use('/api', newsRoutes);
 
 // Health check route
+app.get('/', (req, res) => {
+  res.send('🚀 Railway\'de Çalışan News App Backend');
+});
+
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Server is running' });
 });
 
 // Connect to MongoDB
 mongoose
-  .connect(MONGODB_URI)
+  .connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  } as mongoose.ConnectOptions)
   .then(() => {
-    console.log('Connected to MongoDB');
+    console.log('✅ MongoDB Bağlandı');
     // Start server after successful database connection
     app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+      console.log(`🚀 Server running on port ${PORT}`);
     });
   })
   .catch((error) => {
-    console.error('MongoDB connection error:', error);
+    console.error('❌ MongoDB Bağlantı Hatası:', error);
   });
 
 export default app; 
