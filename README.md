@@ -124,7 +124,7 @@ In case the API doesn't work, the application automatically switches to mock dat
 
 In the Vercel environment, **mockup data is used because News API is paid**. There are mockup data in **`src/services/api.ts`** instead of real news data. Therefore, the application works without an API key in the live environment, but real news data is not displayed.
 
-🔗 **Live Demo:** [HubX News App Vercel](https://news-2r1030j1v-cotneos-projects.vercel.app/news)
+🔗 **Live Demo:** [HubX News App Vercel]([(https://news-app-mu-topaz.vercel.app/)]
 
 ## 🌍 Project Purpose
 
