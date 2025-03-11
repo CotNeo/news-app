@@ -1,130 +1,160 @@
 # HubX News App
 
-Modern ve kullanıcı dostu bir haber uygulaması. Bu uygulama, güncel haberleri görüntülemenizi, aramanızı ve favorilerinize eklemenizi sağlar.
+A modern and user-friendly news application. This app allows you to view, search, and add current news to your favorites.
 
-![HubX News App](https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80)
+## 🚀 Features
 
-## 🚀 Özellikler
+- **Latest News**: View the most current news integrated with News API
+- **Search Function**: Search news by keywords
+- **Favorites**: Add and manage news in favorites
+- **Responsive Design**: Perfect viewing on all devices
+- **Dark Mode**: Dark theme support to reduce eye strain
+- **Modern UI**: Stylish and modern interface with Tailwind CSS and Shadcn UI
+- **Authentication**: User authentication system with NextAuth.js
+- **Protected Routes**: Access control for authenticated users
+- **User Profile**: Personal profile page for authenticated users
 
-- **Güncel Haberler**: News API ile entegre olarak en güncel haberleri görüntüleme
-- **Arama Fonksiyonu**: Anahtar kelimelerle haber arama
-- **Favoriler**: Haberleri favorilere ekleme ve yönetme
-- **Responsive Tasarım**: Tüm cihazlarda mükemmel görünüm
-- **Karanlık Mod**: Göz yorgunluğunu azaltan karanlık tema desteği
-- **Modern UI**: Tailwind CSS ve Shadcn UI ile şık ve modern arayüz
+## 🛠️ Technologies
 
-## 🛠️ Teknolojiler
+- **Next.js 15**: React framework
+- **TypeScript**: Type safety
+- **Redux Toolkit**: State management
+- **RTK Query**: API requests
+- **Tailwind CSS**: Styling and design
+- **Shadcn UI**: Component library
+- **Framer Motion**: Animations
+- **News API**: News data
+- **NextAuth.js**: Authentication system
 
-- **Next.js 15**: React framework'ü
-- **TypeScript**: Tip güvenliği
-- **Redux Toolkit**: State yönetimi
-- **RTK Query**: API istekleri
-- **Tailwind CSS**: Stil ve tasarım
-- **Shadcn UI**: Komponent kütüphanesi
-- **Framer Motion**: Animasyonlar
-- **News API**: Haber verileri
+## 📋 Requirements
 
-## 📋 Gereksinimler
+- Node.js 18.0.0 or higher
+- npm or yarn
+- News API key (you can get it for free from [https://newsapi.org/](https://newsapi.org/))
 
-- Node.js 18.0.0 veya üzeri
-- npm veya yarn
-- News API anahtarı (https://newsapi.org/ adresinden ücretsiz edinebilirsiniz)
+## 🚀 Installation
 
-## 🚀 Kurulum
+1. Clone the repository:
 
-1. Repoyu klonlayın:
    ```bash
-   git clone https://github.com/yourusername/hubx-news-app.git
-   cd hubx-news-app
+   git clone https://github.com/CotNeo/news-app.git
+   cd news-app
    ```
 
-2. Bağımlılıkları yükleyin:
+2. Install dependencies:
+
    ```bash
    npm install
-   # veya
+   # or
    yarn install
    ```
 
-3. `.env.local` dosyası oluşturun ve News API anahtarınızı ekleyin:
+3. Create a `.env.local` file and add your News API key:
+
    ```
    NEXT_PUBLIC_NEWS_API_KEY=your_api_key_here
    ```
 
-4. Uygulamayı başlatın:
+4. Start the application:
+
    ```bash
    npm run dev
-   # veya
+   # or
    yarn dev
    ```
 
-5. Tarayıcınızda [http://localhost:3000](http://localhost:3000) adresine gidin.
+5. Go to [http://localhost:3000](http://localhost:3000) in your browser.
 
-## 📱 Kullanım
+## 📱 Usage
 
-### Ana Sayfa
-Ana sayfa, uygulamanın genel bir tanıtımını ve özelliklerini içerir. Buradan diğer sayfalara kolayca erişebilirsiniz.
+### Home Page
 
-### Haberler Sayfası
-Haberler sayfasında, en güncel haberler listelenir. Arama çubuğunu kullanarak belirli konularda haberler arayabilirsiniz. Her haberin üzerine tıklayarak detaylarını görüntüleyebilir veya favorilerinize ekleyebilirsiniz.
+The home page contains a general introduction to the application and its features. From here, you can easily access other pages.
 
-### Favoriler Sayfası
-Favoriler sayfasında, kaydettiğiniz haberleri görüntüleyebilir ve yönetebilirsiniz. Favorilerinizden bir haberi kaldırmak için "Favorilerden Çıkar" butonuna tıklayabilirsiniz.
+### News Page
 
-## 🧩 Proje Yapısı
+On the news page, the latest news is listed. You can use the search bar to search for news on specific topics. You can view details or add to favorites by clicking on each news item.
+
+### Favorites Page
+
+On the favorites page, you can view and manage the news you've saved. You can remove a news item from your favorites by clicking the "Remove from Favorites" button.
+
+### Authentication
+
+The application includes a complete authentication system:
+
+- **Sign In**: Users can sign in with username and password
+- **Profile Page**: Authenticated users can access their profile page
+- **Protected Routes**: Certain routes are only accessible to authenticated users
+- **User Menu**: The header displays different options based on authentication status
+
+For demo purposes, you can use the following credentials:
+- Username: admin
+- Password: 123456
+
+## 🧩 Project Structure
 
 ```
 news-app/
-├── public/             # Statik dosyalar
-├── src/                # Kaynak kodları
-│   ├── app/            # Next.js sayfa bileşenleri
-│   ├── components/     # Yeniden kullanılabilir bileşenler
-│   ├── hooks/          # Özel React hooks
-│   ├── redux/          # Redux store ve slice'lar
-│   ├── services/       # API servisleri
-│   ├── styles/         # Global stiller
-│   ├── types/          # TypeScript tipleri
-│   └── utils/          # Yardımcı fonksiyonlar
-├── .env.local          # Ortam değişkenleri
-├── next.config.js      # Next.js yapılandırması
-├── tailwind.config.js  # Tailwind CSS yapılandırması
-└── tsconfig.json       # TypeScript yapılandırması
+├── public/             # Static files
+├── src/                # Source code
+│   ├── app/            # Next.js page components
+│   │   ├── auth/       # Authentication pages
+│   │   ├── profile/    # User profile pages
+│   ├── components/     # Reusable components
+│   ├── hooks/          # Custom React hooks
+│   ├── redux/          # Redux store and slices
+│   ├── services/       # API services
+│   ├── styles/         # Global styles
+│   ├── types/          # TypeScript types
+│   └── utils/          # Helper functions
+├── .env.local          # Environment variables
+├── next.config.js      # Next.js configuration
+├── tailwind.config.js  # Tailwind CSS configuration
+└── tsconfig.json       # TypeScript configuration
 ```
 
-## 🔄 API Kullanımı
+## 🔄 API Usage
 
-Uygulama, haberleri çekmek için News API'yi kullanır. API istekleri, RTK Query ile yönetilir ve `src/services/api.ts` dosyasında tanımlanmıştır.
+The application uses News API to fetch news. API requests are managed with RTK Query and defined in the `src/services/api.ts` file.
 
-API'nin çalışmaması durumunda, uygulama otomatik olarak mock verilere geçiş yapar, böylece kullanıcı deneyimi kesintiye uğramaz.
+In case the API doesn't work, the application automatically switches to mock data, so the user experience is not interrupted.
 
-## 🌙 Karanlık Mod
+### 📢 API Usage in Vercel Environment
 
-Uygulama, kullanıcı tercihlerine göre otomatik olarak karanlık veya açık temayı uygular. Tema değiştirmek için sağ üst köşedeki tema düğmesini kullanabilirsiniz.
+In the Vercel environment, **mockup data is used because News API is paid**. There are mockup data in **`src/services/api.ts`** instead of real news data. Therefore, the application works without an API key in the live environment, but real news data is not displayed.
 
-## 📝 Yapılacaklar
+🔗 **Live Demo:** [HubX News App Vercel](https://news-2r1030j1v-cotneos-projects.vercel.app/news)
 
-- [ ] Kullanıcı kimlik doğrulama sistemi
-- [ ] Haber kategorilerine göre filtreleme
-- [ ] Haber detay sayfası
-- [ ] Paylaşım özellikleri
-- [ ] Bildirim sistemi
-- [ ] Offline modu
-- [ ] Performans optimizasyonları
+## 🌍 Project Purpose
 
-## 🤝 Katkıda Bulunma
+This project was developed for the **HubX frontend developer position**. The application has been developed using modern frontend technologies, with a focus on performance and user experience.
 
-Katkılarınızı memnuniyetle karşılıyoruz! Lütfen şu adımları izleyin:
+## 🌙 Dark Mode
 
-1. Bu repoyu fork edin
-2. Yeni bir branch oluşturun (`git checkout -b feature/amazing-feature`)
-3. Değişikliklerinizi commit edin (`git commit -m 'Add some amazing feature'`)
-4. Branch'inizi push edin (`git push origin feature/amazing-feature`)
-5. Pull Request açın
+The application automatically applies dark or light theme according to user preferences. You can use the theme button in the upper right corner to change the theme.
 
+## 🤝 Contributing
 
-## 📞 İletişim
+We welcome your contributions! Please follow these steps:
 
-Sorularınız veya geri bildirimleriniz için lütfen [email protected] adresine e-posta gönderin veya GitHub üzerinden bir issue açın.
+1. Fork this repository
+2. Create a new branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push your branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📞 Contact
+
+For questions or feedback, please send an email to furkanaliakar@gmail.com or open an issue on GitHub.
 
 ---
 
-HubX News App ile güncel haberlerden haberdar olun! 📰✨
+Stay informed about current news with HubX News App! 📰✨
+
+## BONUS
+
+(https://www.youtube.com/watch?v=pzrTT8g1mK0)
+
+If it's suitable for you, I would like to update the Navbar. :) :)
+

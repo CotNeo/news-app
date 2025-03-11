@@ -7,8 +7,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleDarkMode } from "@/redux/newsSlice";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { Moon, Sun, Newspaper, Heart, Menu, X, Home, BookOpen, Search } from "lucide-react";
+import { Moon, Sun, Newspaper, Heart, Menu, X, Home, BookOpen, User, LogOut } from "lucide-react";
 import { RootState } from "@/redux/store";
+import { useSession, signOut } from "next-auth/react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Header() {
   const pathname = usePathname();
@@ -16,6 +25,7 @@ export default function Header() {
   const isDarkMode = useSelector((state: RootState) => state.news.darkMode);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { data: session } = useSession();
 
   // Detect scroll position
   useEffect(() => {
@@ -34,130 +44,120 @@ export default function Header() {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  // Render navigation links
+  const renderNavLinks = () => {
+    return (
+      <>
+        <Link href="/" className={`nav-link ${pathname === "/" ? "active" : ""}`}>
+          <Home className="w-4 h-4 mr-1" />
+          <span>Home</span>
+        </Link>
+        <Link href="/news" className={`nav-link ${pathname === "/news" ? "active" : ""}`}>
+          <Newspaper className="w-4 h-4 mr-1" />
+          <span>News</span>
+        </Link>
+        <Link href="/favorites" className={`nav-link ${pathname === "/favorites" ? "active" : ""}`}>
+          <Heart className="w-4 h-4 mr-1" />
+          <span>Favorites</span>
+        </Link>
+      </>
+    );
+  };
+
+  // Render user menu
+  const renderUserMenu = () => {
+    if (session) {
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="relative">
+              <User className="h-5 w-5" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link href="/profile">
+                <User className="mr-2 h-4 w-4" />
+                <span>Profile</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => signOut({ callbackUrl: '/' })}>
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Sign Out</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    }
+
+    return (
+      <Link href="/auth/signin">
+        <Button variant="outline" size="sm">
+          Sign In
+        </Button>
+      </Link>
+    );
+  };
+
   return (
-    <header className={`sticky top-0 z-50 w-full border-b backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-200 ${
-      isScrolled ? "bg-background/95 shadow-sm" : "bg-background/80"
-    }`}>
-      <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-2 font-bold text-xl">
-          <Newspaper className="h-6 w-6 text-primary" />
-          <Link href="/" className="text-primary hover:text-primary/90 transition-colors">
-            HubX <span className="text-foreground">News</span>
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-md"
+          : "bg-white dark:bg-gray-900"
+      }`}
+    >
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link href="/" className="flex items-center space-x-2">
+            <BookOpen className="h-6 w-6 text-primary" />
+            <span className="font-bold text-xl">HubX News</span>
           </Link>
-        </div>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6">
-          <div className="flex gap-6">
-            <Link 
-              href="/" 
-              className={`text-sm font-medium transition-colors hover:text-primary flex items-center gap-1 ${
-                pathname === "/" ? "text-primary" : "text-muted-foreground"
-              }`}
-            >
-              <Home className="h-4 w-4" />
-              Home
-            </Link>
-            <Link 
-              href="/news" 
-              className={`text-sm font-medium transition-colors hover:text-primary flex items-center gap-1 ${
-                pathname === "/news" ? "text-primary" : "text-muted-foreground"
-              }`}
-            >
-              <BookOpen className="h-4 w-4" />
-              News
-            </Link>
-            <Link 
-              href="/favorites" 
-              className={`text-sm font-medium transition-colors hover:text-primary flex items-center gap-1 ${
-                pathname === "/favorites" ? "text-primary" : "text-muted-foreground"
-              }`}
-            >
-              <Heart className="h-4 w-4" />
-              Favorites
-            </Link>
-          </div>
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-6">
+            {renderNavLinks()}
+          </nav>
 
-          <div className="flex items-center gap-4 border-l pl-4">
-            <div className="flex items-center space-x-2">
-              <Sun className="h-4 w-4 text-yellow-500" />
-              <Switch 
-                checked={isDarkMode} 
-                onCheckedChange={handleToggleDarkMode} 
-                aria-label="Toggle dark mode"
-              />
-              <Moon className="h-4 w-4 text-blue-500" />
+          {/* Actions */}
+          <div className="flex items-center space-x-2">
+            {/* Dark Mode Toggle */}
+            <div className="flex items-center space-x-2 mr-2">
+              <Sun className="h-4 w-4" />
+              <Switch checked={isDarkMode} onCheckedChange={handleToggleDarkMode} />
+              <Moon className="h-4 w-4" />
             </div>
 
-            <Link href="/news">
-              <Button variant="outline" size="sm" className="gap-1 hidden lg:flex">
-                <Search className="h-4 w-4" />
-                Search News
-              </Button>
-            </Link>
-          </div>
-        </nav>
+            {/* User Menu */}
+            {renderUserMenu()}
 
-        {/* Mobile Navigation Button */}
-        <div className="flex items-center gap-2 md:hidden">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={handleToggleDarkMode}
-            className="text-muted-foreground"
-          >
-            {isDarkMode ? <Sun className="h-5 w-5 text-yellow-500" /> : <Moon className="h-5 w-5 text-blue-500" />}
-          </Button>
-          
-          <Button variant="ghost" size="icon" onClick={toggleMobileMenu}>
-            {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
+            {/* Mobile Menu Button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              onClick={toggleMobileMenu}
+            >
+              {isMobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </Button>
+          </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Navigation */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-t">
-          <div className="container py-4 flex flex-col gap-4">
-            <Link 
-              href="/" 
-              className={`flex items-center gap-2 p-2 rounded-md ${
-                pathname === "/" ? "bg-primary/10 text-primary" : "text-muted-foreground"
-              }`}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <Home className="h-5 w-5" />
-              Home
-            </Link>
-            <Link 
-              href="/news" 
-              className={`flex items-center gap-2 p-2 rounded-md ${
-                pathname === "/news" ? "bg-primary/10 text-primary" : "text-muted-foreground"
-              }`}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <BookOpen className="h-5 w-5" />
-              News
-            </Link>
-            <Link 
-              href="/favorites" 
-              className={`flex items-center gap-2 p-2 rounded-md ${
-                pathname === "/favorites" ? "bg-primary/10 text-primary" : "text-muted-foreground"
-              }`}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <Heart className="h-5 w-5" />
-              Favorites
-            </Link>
-            <Link 
-              href="/news" 
-              className="flex items-center gap-2 p-2 rounded-md text-muted-foreground"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <Search className="h-5 w-5" />
-              Search News
-            </Link>
-          </div>
+        <div className="md:hidden bg-white dark:bg-gray-900 shadow-lg">
+          <nav className="flex flex-col py-4 px-4 space-y-4">
+            {renderNavLinks()}
+          </nav>
         </div>
       )}
     </header>
