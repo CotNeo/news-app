@@ -152,9 +152,10 @@ For questions or feedback, please send an email to furkanaliakar@gmail.com or op
 
 Stay informed about current news with HubX News App! 📰✨
 
-## BONUS
+## FIRST COMMIT =>
 
 (https://www.youtube.com/watch?v=pzrTT8g1mK0)
 
-If it's suitable for you, I would like to update the Navbar. :) :)
+Eğer siz de müsaade ederseniz, topluluğa ilk desteğimi dikey ekrandaki Navbar fontsize'nı  düzelterek verebilirim. Saygılarımla :)
 
+##
