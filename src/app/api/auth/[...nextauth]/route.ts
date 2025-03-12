@@ -2,6 +2,11 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import type { NextAuthOptions } from "next-auth";
 
+// Ortam değişkenlerini kontrol et
+if (!process.env.NEXTAUTH_SECRET) {
+  console.warn("Warning: NEXTAUTH_SECRET is not defined. This is required for production.");
+}
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -28,6 +33,7 @@ export const authOptions: NextAuthOptions = {
   ],
   pages: {
     signIn: "/auth/signin",
+    error: "/auth/error",
   },
   session: {
     strategy: "jwt",
@@ -41,6 +47,15 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
+  // Hata ayıklama için debug modunu etkinleştir (sadece geliştirme ortamında)
+  debug: process.env.NODE_ENV === "development",
+  // JWT için güvenlik ayarları
+  jwt: {
+    // Üretim ortamında bu değer otomatik olarak NEXTAUTH_SECRET'tan alınır
+    secret: process.env.NEXTAUTH_SECRET,
+  },
+  // Güvenlik ayarları
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 const handler = NextAuth(authOptions);

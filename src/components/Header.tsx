@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -17,7 +17,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export default function Header() {
+// usePathname hook'unu kullanan bileşen
+function HeaderContent() {
   const pathname = usePathname();
   const { isDarkMode, toggleTheme } = useDarkMode();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -158,5 +159,32 @@ export default function Header() {
         </div>
       )}
     </header>
+  );
+}
+
+// Yükleme durumu için fallback bileşeni
+function HeaderLoadingFallback() {
+  return (
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          <div className="flex items-center space-x-2">
+            <div className="h-6 w-6 bg-gray-200 dark:bg-gray-700 rounded-md animate-pulse"></div>
+            <div className="h-6 w-24 bg-gray-200 dark:bg-gray-700 rounded-md animate-pulse"></div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="h-8 w-16 bg-gray-200 dark:bg-gray-700 rounded-md animate-pulse"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+export default function Header() {
+  return (
+    <Suspense fallback={<HeaderLoadingFallback />}>
+      <HeaderContent />
+    </Suspense>
   );
 } 
