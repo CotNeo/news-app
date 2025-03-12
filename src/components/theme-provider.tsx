@@ -24,7 +24,10 @@ export function ThemeProvider({
     const root = window.document.documentElement;
     root.classList.remove("light", "dark");
     root.classList.add(theme);
-  }, [theme]);
+    
+    // Tema değiştiğinde localStorage'a kaydet
+    localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
+  }, [theme, isDarkMode]);
 
   return (
     <ThemeProviderContext.Provider value={{ theme }}>

@@ -2,14 +2,13 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { Heart, Calendar, ExternalLink } from "lucide-react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Article, toggleFavorite } from "@/redux/newsSlice";
+import { Article } from "@/redux/newsSlice";
 import { formatDate } from "@/lib/utils";
-import { RootState } from "@/redux/store";
+import { useFavorites } from "@/hooks/useFavorites";
 
 interface NewsCardProps {
   article: Article;
@@ -19,10 +18,8 @@ interface NewsCardProps {
 export default function NewsCard({ article, index }: NewsCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const dispatch = useDispatch();
-  const isFavorite = useSelector((state: RootState) => 
-    state.news.favorites.some(item => item.id === article.id)
-  );
+  const { addToFavorites, isFavorite } = useFavorites();
+  const isArticleFavorite = isFavorite(article.id);
 
   // Component mount olduktan sonra animasyonları etkinleştiriyoruz
   useEffect(() => {
@@ -30,7 +27,7 @@ export default function NewsCard({ article, index }: NewsCardProps) {
   }, []);
 
   const handleToggleFavorite = () => {
-    dispatch(toggleFavorite(article));
+    addToFavorites(article);
   };
 
   // Format the date
@@ -72,9 +69,9 @@ export default function NewsCard({ article, index }: NewsCardProps) {
               size="icon"
               className="absolute top-2 right-2 bg-background/80 backdrop-blur-sm hover:bg-background/90 z-10"
               onClick={handleToggleFavorite}
-              aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+              aria-label={isArticleFavorite ? "Remove from favorites" : "Add to favorites"}
             >
-              <Heart className={`h-5 w-5 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
+              <Heart className={`h-5 w-5 ${isArticleFavorite ? "fill-red-500 text-red-500" : ""}`} />
             </Button>
             <div className="absolute bottom-2 left-2 flex items-center gap-1 text-xs text-white bg-black/30 px-2 py-1 rounded-full backdrop-blur-sm">
               <Calendar className="h-3 w-3" />
@@ -144,9 +141,9 @@ export default function NewsCard({ article, index }: NewsCardProps) {
             size="icon"
             className="absolute top-2 right-2 bg-background/80 backdrop-blur-sm hover:bg-background/90 z-10"
             onClick={handleToggleFavorite}
-            aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+            aria-label={isArticleFavorite ? "Remove from favorites" : "Add to favorites"}
           >
-            <Heart className={`h-5 w-5 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
+            <Heart className={`h-5 w-5 ${isArticleFavorite ? "fill-red-500 text-red-500" : ""}`} />
           </Button>
           <div className="absolute bottom-2 left-2 flex items-center gap-1 text-xs text-white bg-black/30 px-2 py-1 rounded-full backdrop-blur-sm">
             <Calendar className="h-3 w-3" />

@@ -3,13 +3,11 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
-import { toggleDarkMode } from "@/redux/newsSlice";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Moon, Sun, Newspaper, Heart, Menu, X, Home, BookOpen, User, LogOut } from "lucide-react";
-import { RootState } from "@/redux/store";
 import { useSession, signOut } from "next-auth/react";
+import { useDarkMode } from "@/hooks/useDarkMode";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,8 +19,7 @@ import {
 
 export default function Header() {
   const pathname = usePathname();
-  const dispatch = useDispatch();
-  const isDarkMode = useSelector((state: RootState) => state.news.darkMode);
+  const { isDarkMode, toggleTheme } = useDarkMode();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { data: session } = useSession();
@@ -37,7 +34,7 @@ export default function Header() {
   }, []);
 
   const handleToggleDarkMode = () => {
-    dispatch(toggleDarkMode());
+    toggleTheme();
   };
 
   const toggleMobileMenu = () => {

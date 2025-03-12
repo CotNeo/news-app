@@ -20,10 +20,31 @@ interface NewsState {
   darkMode: boolean;
 }
 
-const initialState: NewsState = {
-  favorites: [],
-  darkMode: false,
+// localStorage'dan başlangıç değerlerini almaya çalış
+const getInitialState = (): NewsState => {
+  // Tarayıcı ortamında olup olmadığını kontrol et
+  if (typeof window !== 'undefined') {
+    try {
+      const storedDarkMode = localStorage.getItem('darkMode');
+      const storedFavorites = localStorage.getItem('favorites');
+      
+      return {
+        darkMode: storedDarkMode ? JSON.parse(storedDarkMode) : false,
+        favorites: storedFavorites ? JSON.parse(storedFavorites) : [],
+      };
+    } catch (error) {
+      console.error('Error loading state from localStorage:', error);
+    }
+  }
+  
+  // Varsayılan değerler
+  return {
+    favorites: [],
+    darkMode: false,
+  };
 };
+
+const initialState: NewsState = getInitialState();
 
 const newsSlice = createSlice({
   name: 'news',
@@ -40,9 +61,19 @@ const newsSlice = createSlice({
         // Add to favorites
         state.favorites.push(article);
       }
+      
+      // localStorage'a kaydet
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('favorites', JSON.stringify(state.favorites));
+      }
     },
     toggleDarkMode: (state) => {
       state.darkMode = !state.darkMode;
+      
+      // localStorage'a kaydet
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('darkMode', JSON.stringify(state.darkMode));
+      }
     },
   },
 });
